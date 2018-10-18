@@ -311,7 +311,7 @@ ChartInternal.prototype.updateCircle = function (cx, cy) {
         .attr("cx", cx)
         .attr("cy", cy)
         .attr("r", $$.pointR.bind($$))
-        .style("fill", $$.color);
+        .style("stroke", $$.color);
     $$.mainCircle = mainCircleEnter.merge(mainCircle)
         .style("opacity", $$.initialOpacityForCircle.bind($$));
     mainCircle.exit()
@@ -323,7 +323,7 @@ ChartInternal.prototype.redrawCircle = function (cx, cy, withTransition, transit
     return [
         (withTransition ? $$.mainCircle.transition(transition) : $$.mainCircle)
             .style('opacity', this.opacityForCircle.bind($$))
-            .style("fill", $$.color)
+            .style("stroke", $$.color)
             .attr("cx", cx)
             .attr("cy", cy),
         (withTransition ? selectedCircles.transition(transition) : selectedCircles)
