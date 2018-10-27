@@ -1,4 +1,4 @@
-/* @license C3.js v0.6.10 | (c) C3 Team and other contributors | http://c3js.org/ */
+/* @license C3.js v0.6.11 | (c) C3 Team and other contributors | http://c3js.org/ */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
@@ -1147,7 +1147,7 @@
   };
 
   var c3 = {
-    version: "0.6.10",
+    version: "0.6.11",
     chart: {
       fn: Chart.prototype,
       internal: {
@@ -7022,29 +7022,25 @@
 
   ChartInternal.prototype.findClosest = function (values, pos) {
     var $$ = this,
-        minDist = $$.config.point_sensitivity,
         closest; // find mouseovering bar
 
-    values.filter(function (v) {
-      return v && $$.isBarType(v.id);
-    }).forEach(function (v) {
+    values.forEach(function (v) {
       var shape = $$.main.select('.' + CLASS.bars + $$.getTargetSelectorSuffix(v.id) + ' .' + CLASS.bar + '-' + v.index).node();
 
       if (!closest && $$.isWithinBar($$.d3.mouse(shape), shape)) {
         closest = v;
       }
     }); // find closest point from non-bar
+    // values.filter(function (v) {
+    //     return v && !$$.isBarType(v.id);
+    // }).forEach(function (v) {
+    //     var d = $$.dist(v, pos);
+    //     if (d < minDist) {
+    //         minDist = d;
+    //         closest = v;
+    //     }
+    // });
 
-    values.filter(function (v) {
-      return v && !$$.isBarType(v.id);
-    }).forEach(function (v) {
-      var d = $$.dist(v, pos);
-
-      if (d < minDist) {
-        minDist = d;
-        closest = v;
-      }
-    });
     return closest;
   };
 
