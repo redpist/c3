@@ -339,10 +339,13 @@ ChartInternal.prototype.findClosestFromTargets = function (targets, pos) {
 };
 ChartInternal.prototype.findClosest = function (values, pos) {
     var $$ = this,
+        minDist = $$.config.point_sensitivity,
         closest;
 
     // find mouseovering bar
-    values.forEach(function (v) {
+    values.filter(function (v) {
+        return v && $$.isBarType(v.id);
+    }).forEach(function (v) {
         var shape = $$.main.select('.' + CLASS.bars + $$.getTargetSelectorSuffix(v.id) + ' .' + CLASS.bar + '-' + v.index).node();
         if (!closest && $$.isWithinBar($$.d3.mouse(shape), shape)) {
             closest = v;
@@ -350,15 +353,15 @@ ChartInternal.prototype.findClosest = function (values, pos) {
     });
 
     // find closest point from non-bar
-    // values.filter(function (v) {
-    //     return v && !$$.isBarType(v.id);
-    // }).forEach(function (v) {
-    //     var d = $$.dist(v, pos);
-    //     if (d < minDist) {
-    //         minDist = d;
-    //         closest = v;
-    //     }
-    // });
+    values.filter(function (v) {
+        return v && !$$.isBarType(v.id);
+    }).forEach(function (v) {
+        var d = $$.dist(v, pos);
+        if (d < minDist) {
+            minDist = d;
+            closest = v;
+        }
+    });
 
     return closest;
 };
